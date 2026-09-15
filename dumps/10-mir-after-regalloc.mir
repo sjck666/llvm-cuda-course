@@ -1,0 +1,932 @@
+--- |
+  ; ModuleID = '../dumps/02-device-O2.ll'
+  source_filename = "tc_mma.cu"
+  target datalayout = "e-p6:32:32-i64:64-i128:128-i256:256-v16:16-v32:32-n16:32:64"
+  target triple = "nvptx64-nvidia-cuda"
+  
+  %struct.__half = type { i16 }
+  
+  @_ZZ15mma_tc_ldmatrixE2As = internal addrspace(3) global [16 x [16 x %struct.__half]] undef, align 16
+  @_ZZ15mma_tc_ldmatrixE2Bs = internal addrspace(3) global [16 x [8 x %struct.__half]] undef, align 16
+  
+  ; Function Attrs: convergent mustprogress noinline norecurse nounwind
+  define dso_local ptx_kernel void @mma_tc_manual(ptr noalias nofree noundef readonly captures(none) %0, ptr noalias nofree noundef readonly captures(none) %1, ptr noalias nofree noundef writeonly captures(none) %2, i32 noundef %3, i32 noundef %4, i32 noundef %5) local_unnamed_addr #0 {
+    %7 = addrspacecast ptr %0 to ptr addrspace(1)
+    %8 = addrspacecast ptr %1 to ptr addrspace(1)
+    %9 = addrspacecast ptr %2 to ptr addrspace(1)
+    %10 = tail call noundef i32 @llvm.nvvm.read.ptx.sreg.tid.x()
+    %11 = tail call noundef i32 @llvm.nvvm.read.ptx.sreg.ctaid.y()
+    %12 = shl i32 %11, 4
+    %13 = tail call noundef i32 @llvm.nvvm.read.ptx.sreg.ctaid.x()
+    %14 = shl i32 %13, 3
+    %15 = lshr i32 %10, 2
+    %16 = shl nuw nsw i32 %10, 1
+    %17 = and i32 %16, 6
+    %18 = icmp sgt i32 %5, 0
+    %19 = add i32 %12, %15
+    br i1 %18, label %24, label %20
+  
+  20:                                               ; preds = %6
+    %21 = sext i32 %14 to i64
+    %22 = zext nneg i32 %17 to i64
+    %23 = add i32 %19, 8
+    br label %51
+  
+  24:                                               ; preds = %6
+    %25 = mul nuw nsw i32 %5, %19
+    %26 = zext nneg i32 %25 to i64
+    %27 = add i32 %19, 8
+    %28 = mul nuw nsw i32 %5, %27
+    %29 = zext nneg i32 %28 to i64
+    %30 = zext nneg i32 %17 to i64
+    %31 = sext i32 %14 to i64
+    %32 = getelementptr [2 x i8], ptr addrspace(1) %8, i64 %31
+    %33 = zext nneg i32 %15 to i64
+    %34 = getelementptr [2 x i8], ptr addrspace(1) %32, i64 %33
+    %35 = sext i32 %4 to i64
+    %36 = add nuw nsw i32 %17, 8
+    %37 = mul i32 %4, %36
+    %38 = shl i32 %4, 4
+    %39 = trunc i32 %10 to i2
+    %40 = zext i2 %39 to i32
+    %41 = mul i32 %4, %40
+    %42 = shl i32 %41, 1
+    %43 = zext i2 %39 to i64
+    %44 = shl nuw nsw i64 %43, 2
+    %45 = shl nuw nsw i64 %29, 1
+    %46 = add i64 %44, %45
+    %47 = add i64 %46, 16
+    %scevgep = getelementptr i8, ptr addrspace(1) %7, i64 %47
+    %48 = shl nuw nsw i64 %26, 1
+    %49 = add i64 %44, %48
+    %50 = add i64 %49, 16
+    %scevgep4 = getelementptr i8, ptr addrspace(1) %7, i64 %50
+    br label %71
+  
+  51:                                               ; preds = %71, %20
+    %52 = phi i32 [ %23, %20 ], [ %27, %71 ]
+    %53 = phi i64 [ %22, %20 ], [ %30, %71 ]
+    %54 = phi i64 [ %21, %20 ], [ %31, %71 ]
+    %55 = phi float [ 0.000000e+00, %20 ], [ %99, %71 ]
+    %56 = phi float [ 0.000000e+00, %20 ], [ %98, %71 ]
+    %57 = phi float [ 0.000000e+00, %20 ], [ %97, %71 ]
+    %58 = phi float [ 0.000000e+00, %20 ], [ %96, %71 ]
+    %59 = mul nsw i32 %4, %19
+    %60 = sext i32 %59 to i64
+    %61 = getelementptr inbounds [4 x i8], ptr addrspace(1) %9, i64 %60
+    %62 = getelementptr inbounds [4 x i8], ptr addrspace(1) %61, i64 %54
+    %63 = getelementptr inbounds [4 x i8], ptr addrspace(1) %62, i64 %53
+    %64 = mul nsw i32 %4, %52
+    %65 = sext i32 %64 to i64
+    %66 = getelementptr inbounds [4 x i8], ptr addrspace(1) %9, i64 %65
+    %67 = getelementptr inbounds [4 x i8], ptr addrspace(1) %66, i64 %54
+    %68 = getelementptr inbounds [4 x i8], ptr addrspace(1) %67, i64 %53
+    store float %58, ptr addrspace(1) %63, align 4, !tbaa !11
+    %69 = getelementptr inbounds i8, ptr addrspace(1) %63, i64 4
+    store float %57, ptr addrspace(1) %69, align 4, !tbaa !11
+    store float %56, ptr addrspace(1) %68, align 4, !tbaa !11
+    %70 = getelementptr inbounds i8, ptr addrspace(1) %68, i64 4
+    store float %55, ptr addrspace(1) %70, align 4, !tbaa !11
+    ret void
+  
+  71:                                               ; preds = %71, %24
+    %lsr.iv5 = phi ptr addrspace(1) [ %scevgep6, %71 ], [ %scevgep4, %24 ]
+    %lsr.iv1 = phi ptr addrspace(1) [ %scevgep2, %71 ], [ %scevgep, %24 ]
+    %lsr.iv = phi i32 [ %lsr.iv.next, %71 ], [ 0, %24 ]
+    %72 = phi i32 [ 0, %24 ], [ %100, %71 ]
+    %73 = phi float [ 0.000000e+00, %24 ], [ %96, %71 ]
+    %74 = phi float [ 0.000000e+00, %24 ], [ %97, %71 ]
+    %75 = phi float [ 0.000000e+00, %24 ], [ %98, %71 ]
+    %76 = phi float [ 0.000000e+00, %24 ], [ %99, %71 ]
+    %scevgep7 = getelementptr i8, ptr addrspace(1) %lsr.iv5, i64 -16
+    %77 = load i32, ptr addrspace(1) %scevgep7, align 4, !tbaa !13, !invariant.load !14
+    %scevgep3 = getelementptr i8, ptr addrspace(1) %lsr.iv1, i64 -16
+    %78 = load i32, ptr addrspace(1) %scevgep3, align 4, !tbaa !13, !invariant.load !14
+    %79 = load i32, ptr addrspace(1) %lsr.iv5, align 4, !tbaa !13, !invariant.load !14
+    %80 = load i32, ptr addrspace(1) %lsr.iv1, align 4, !tbaa !13, !invariant.load !14
+    %81 = add i32 %42, %lsr.iv
+    %82 = sext i32 %81 to i64
+    %83 = getelementptr [2 x i8], ptr addrspace(1) %34, i64 %82
+    %84 = add i32 %37, %lsr.iv
+    %85 = sext i32 %84 to i64
+    %86 = getelementptr [2 x i8], ptr addrspace(1) %34, i64 %85
+    %87 = load i16, ptr addrspace(1) %83, align 2, !tbaa !15, !invariant.load !14
+    %88 = getelementptr inbounds [2 x i8], ptr addrspace(1) %83, i64 %35
+    %89 = load i16, ptr addrspace(1) %88, align 2, !tbaa !15, !invariant.load !14
+    %90 = tail call i32 asm "{  mov.b32 $0, {$1,$2};}\0A", "=r,h,h"(i16 %87, i16 %89) #3, !srcloc !17
+    %91 = load i16, ptr addrspace(1) %86, align 2, !tbaa !15, !invariant.load !14
+    %92 = getelementptr inbounds [2 x i8], ptr addrspace(1) %86, i64 %35
+    %93 = load i16, ptr addrspace(1) %92, align 2, !tbaa !15, !invariant.load !14
+    %94 = tail call i32 asm "{  mov.b32 $0, {$1,$2};}\0A", "=r,h,h"(i16 %91, i16 %93) #3, !srcloc !17
+    %95 = tail call contract { float, float, float, float } asm sideeffect "mma.sync.aligned.m16n8k16.row.col.f32.f16.f16.f32 {$0,$1,$2,$3}, {$4,$5,$6,$7}, {$8,$9}, {$10,$11,$12,$13};\0A", "=f,=f,=f,=f,r,r,r,r,r,r,f,f,f,f"(i32 %77, i32 %78, i32 %79, i32 %80, i32 %90, i32 %94, float %73, float %74, float %75, float %76) #4, !srcloc !18
+    %96 = extractvalue { float, float, float, float } %95, 0
+    %97 = extractvalue { float, float, float, float } %95, 1
+    %98 = extractvalue { float, float, float, float } %95, 2
+    %99 = extractvalue { float, float, float, float } %95, 3
+    %100 = add nuw i32 %72, 16
+    %lsr.iv.next = add i32 %lsr.iv, %38
+    %scevgep2 = getelementptr i8, ptr addrspace(1) %lsr.iv1, i64 32
+    %scevgep6 = getelementptr i8, ptr addrspace(1) %lsr.iv5, i64 32
+    %101 = icmp slt i32 %100, %5
+    br i1 %101, label %71, label %51, !llvm.loop !19
+  }
+  
+  ; Function Attrs: convergent mustprogress noinline norecurse nounwind
+  define dso_local ptx_kernel void @mma_tc_ldmatrix(ptr noalias noundef %0, ptr noalias noundef %1, ptr noalias nofree noundef writeonly captures(none) %2, i32 noundef %3, i32 noundef %4, i32 noundef %5) local_unnamed_addr #0 {
+    %7 = addrspacecast ptr %0 to ptr addrspace(1)
+    %8 = addrspacecast ptr %1 to ptr addrspace(1)
+    %9 = addrspacecast ptr %2 to ptr addrspace(1)
+    %10 = tail call noundef i32 @llvm.nvvm.read.ptx.sreg.tid.x()
+    %11 = tail call noundef i32 @llvm.nvvm.read.ptx.sreg.ctaid.y()
+    %12 = shl nuw nsw i32 %11, 4
+    %13 = tail call noundef i32 @llvm.nvvm.read.ptx.sreg.ctaid.x()
+    %14 = shl i32 %13, 3
+    %15 = icmp sgt i32 %5, 0
+    br i1 %15, label %18, label %16
+  
+  16:                                               ; preds = %6
+    %17 = sext i32 %14 to i64
+    br label %58
+  
+  18:                                               ; preds = %6
+    %19 = shl nuw nsw i32 %10, 3
+    %20 = lshr i32 %10, 1
+    %21 = and i32 %19, 8
+    %22 = zext nneg i32 %20 to i64
+    %23 = getelementptr inbounds [32 x i8], ptr addrspace(3) @_ZZ15mma_tc_ldmatrixE2As, i64 %22
+    %24 = zext nneg i32 %21 to i64
+    %25 = getelementptr inbounds [2 x i8], ptr addrspace(3) %23, i64 %24
+    %26 = add nuw nsw i32 %12, %20
+    %27 = mul nuw nsw i32 %5, %26
+    %28 = zext nneg i32 %27 to i64
+    %29 = getelementptr inbounds [2 x i8], ptr addrspace(1) %7, i64 %28
+    %30 = getelementptr inbounds [2 x i8], ptr addrspace(1) %29, i64 %24
+    %31 = addrspacecast ptr addrspace(1) %30 to ptr
+    %32 = ptrtoint ptr addrspace(3) %25 to i64
+    %33 = trunc i64 %32 to i32
+    %34 = shl nuw nsw i32 %10, 2
+    %35 = and i32 %34, 4
+    %36 = getelementptr inbounds [16 x i8], ptr addrspace(3) @_ZZ15mma_tc_ldmatrixE2Bs, i64 %22
+    %37 = zext nneg i32 %35 to i64
+    %38 = getelementptr inbounds [2 x i8], ptr addrspace(3) %36, i64 %37
+    %39 = sext i32 %14 to i64
+    %40 = getelementptr [2 x i8], ptr addrspace(1) %8, i64 %39
+    %41 = getelementptr [2 x i8], ptr addrspace(1) %40, i64 %37
+    %42 = addrspacecast ptr addrspace(1) %41 to ptr
+    %43 = ptrtoint ptr addrspace(3) %38 to i64
+    %44 = trunc i64 %43 to i32
+    %45 = and i32 %10, 15
+    %46 = icmp samesign ugt i32 %10, 15
+    %47 = select i1 %46, i64 8, i64 0
+    %48 = zext nneg i32 %45 to i64
+    %49 = getelementptr inbounds [32 x i8], ptr addrspace(3) @_ZZ15mma_tc_ldmatrixE2As, i64 %48
+    %50 = getelementptr inbounds [2 x i8], ptr addrspace(3) %49, i64 %47
+    %51 = ptrtoint ptr addrspace(3) %50 to i64
+    %52 = trunc i64 %51 to i32
+    %53 = getelementptr inbounds [16 x i8], ptr addrspace(3) @_ZZ15mma_tc_ldmatrixE2Bs, i64 %48
+    %54 = ptrtoint ptr addrspace(3) %53 to i64
+    %55 = trunc i64 %54 to i32
+    %56 = mul i32 %4, %20
+    %57 = shl i32 %4, 4
+    br label %82
+  
+  58:                                               ; preds = %82, %16
+    %59 = phi i64 [ %17, %16 ], [ %39, %82 ]
+    %60 = phi float [ 0.000000e+00, %16 ], [ %102, %82 ]
+    %61 = phi float [ 0.000000e+00, %16 ], [ %101, %82 ]
+    %62 = phi float [ 0.000000e+00, %16 ], [ %100, %82 ]
+    %63 = phi float [ 0.000000e+00, %16 ], [ %99, %82 ]
+    %64 = shl nuw nsw i32 %10, 1
+    %65 = and i32 %64, 6
+    %66 = lshr i32 %10, 2
+    %67 = add nuw nsw i32 %12, %66
+    %68 = mul nsw i32 %4, %67
+    %69 = sext i32 %68 to i64
+    %70 = getelementptr inbounds [4 x i8], ptr addrspace(1) %9, i64 %69
+    %71 = getelementptr inbounds [4 x i8], ptr addrspace(1) %70, i64 %59
+    %72 = zext nneg i32 %65 to i64
+    %73 = getelementptr inbounds [4 x i8], ptr addrspace(1) %71, i64 %72
+    %74 = add i32 %67, 8
+    %75 = mul nsw i32 %4, %74
+    %76 = sext i32 %75 to i64
+    %77 = getelementptr inbounds [4 x i8], ptr addrspace(1) %9, i64 %76
+    %78 = getelementptr inbounds [4 x i8], ptr addrspace(1) %77, i64 %59
+    %79 = getelementptr inbounds [4 x i8], ptr addrspace(1) %78, i64 %72
+    store float %63, ptr addrspace(1) %73, align 4, !tbaa !11
+    %80 = getelementptr inbounds i8, ptr addrspace(1) %73, i64 4
+    store float %62, ptr addrspace(1) %80, align 4, !tbaa !11
+    store float %61, ptr addrspace(1) %79, align 4, !tbaa !11
+    %81 = getelementptr inbounds i8, ptr addrspace(1) %79, i64 4
+    store float %60, ptr addrspace(1) %81, align 4, !tbaa !11
+    ret void
+  
+  82:                                               ; preds = %82, %18
+    %lsr.iv1 = phi ptr [ %scevgep, %82 ], [ %31, %18 ]
+    %lsr.iv = phi i32 [ %lsr.iv.next, %82 ], [ %56, %18 ]
+    %83 = phi i32 [ 0, %18 ], [ %103, %82 ]
+    %84 = phi float [ 0.000000e+00, %18 ], [ %99, %82 ]
+    %85 = phi float [ 0.000000e+00, %18 ], [ %100, %82 ]
+    %86 = phi float [ 0.000000e+00, %18 ], [ %101, %82 ]
+    %87 = phi float [ 0.000000e+00, %18 ], [ %102, %82 ]
+    tail call void asm sideeffect "cp.async.cg.shared.global [$0], [$1], 16;\0A", "r,l"(i32 %33, ptr %lsr.iv1) #4, !srcloc !21
+    %88 = sext i32 %lsr.iv to i64
+    %89 = getelementptr [2 x i8], ptr %42, i64 %88
+    tail call void asm sideeffect "cp.async.ca.shared.global [$0], [$1], 8;\0A", "r,l"(i32 %44, ptr %89) #4, !srcloc !22
+    tail call void asm sideeffect "cp.async.commit_group;\0A", ""() #4, !srcloc !23
+    tail call void asm sideeffect "cp.async.wait_group 0;\0A", ""() #4, !srcloc !24
+    tail call void @llvm.nvvm.barrier.cta.sync.aligned.all(i32 0)
+    %90 = tail call { i32, i32, i32, i32 } asm sideeffect "ldmatrix.sync.aligned.m8n8.x4.shared.b16 {$0,$1,$2,$3}, [$4];\0A", "=r,=r,=r,=r,r"(i32 %52) #4, !srcloc !25
+    %91 = extractvalue { i32, i32, i32, i32 } %90, 0
+    %92 = extractvalue { i32, i32, i32, i32 } %90, 1
+    %93 = extractvalue { i32, i32, i32, i32 } %90, 2
+    %94 = extractvalue { i32, i32, i32, i32 } %90, 3
+    %95 = tail call { i32, i32 } asm sideeffect "ldmatrix.sync.aligned.m8n8.x2.trans.shared.b16 {$0,$1}, [$2];\0A", "=r,=r,r"(i32 %55) #4, !srcloc !26
+    %96 = extractvalue { i32, i32 } %95, 0
+    %97 = extractvalue { i32, i32 } %95, 1
+    %98 = tail call contract { float, float, float, float } asm sideeffect "mma.sync.aligned.m16n8k16.row.col.f32.f16.f16.f32 {$0,$1,$2,$3}, {$4,$5,$6,$7}, {$8,$9}, {$10,$11,$12,$13};\0A", "=f,=f,=f,=f,r,r,r,r,r,r,f,f,f,f"(i32 %91, i32 %92, i32 %93, i32 %94, i32 %96, i32 %97, float %84, float %85, float %86, float %87) #4, !srcloc !18
+    %99 = extractvalue { float, float, float, float } %98, 0
+    %100 = extractvalue { float, float, float, float } %98, 1
+    %101 = extractvalue { float, float, float, float } %98, 2
+    %102 = extractvalue { float, float, float, float } %98, 3
+    tail call void @llvm.nvvm.barrier.cta.sync.aligned.all(i32 0)
+    %103 = add nuw i32 %83, 16
+    %lsr.iv.next = add i32 %lsr.iv, %57
+    %scevgep = getelementptr i8, ptr %lsr.iv1, i64 32
+    %104 = icmp slt i32 %103, %5
+    br i1 %104, label %82, label %58, !llvm.loop !27
+  }
+  
+  ; Function Attrs: convergent nocallback nounwind
+  declare void @llvm.nvvm.barrier.cta.sync.aligned.all(i32) #1
+  
+  ; Function Attrs: nocallback nofree nosync nounwind speculatable willreturn memory(none)
+  declare noundef range(i32 0, 1024) i32 @llvm.nvvm.read.ptx.sreg.tid.x() #2
+  
+  ; Function Attrs: nocallback nofree nosync nounwind speculatable willreturn memory(none)
+  declare noundef range(i32 0, 65535) i32 @llvm.nvvm.read.ptx.sreg.ctaid.y() #2
+  
+  ; Function Attrs: nocallback nofree nosync nounwind speculatable willreturn memory(none)
+  declare noundef range(i32 0, 2147483647) i32 @llvm.nvvm.read.ptx.sreg.ctaid.x() #2
+  
+  attributes #0 = { convergent mustprogress noinline norecurse nounwind "frame-pointer"="all" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="sm_89" "target-features"="+ptx87" "uniform-work-group-size" }
+  attributes #1 = { convergent nocallback nounwind "target-cpu"="sm_89" }
+  attributes #2 = { nocallback nofree nosync nounwind speculatable willreturn memory(none) "target-cpu"="sm_89" }
+  attributes #3 = { convergent nounwind memory(none) }
+  attributes #4 = { convergent nounwind }
+  
+  !llvm.module.flags = !{!0, !1, !2}
+  !llvm.ident = !{!3, !4}
+  !llvm.errno.tbaa = !{!5}
+  !nvvmir.version = !{!10}
+  
+  !0 = !{i32 2, !"SDK Version", [2 x i32] [i32 12, i32 8]}
+  !1 = !{i32 4, !"nvvm-reflect-ftz", i32 0}
+  !2 = !{i32 7, !"frame-pointer", i32 2}
+  !3 = !{!"clang version 24.0.0git (ssh://git@ssh.github.com:443/llvm/llvm-project.git 677a4c33ba942fe7aec6a1be15ba388f1b74d855)"}
+  !4 = !{!"clang version 3.8.0 (tags/RELEASE_380/final)"}
+  !5 = !{!6, !7, i64 0}
+  !6 = !{!"__libc_errno", !7, i64 0}
+  !7 = !{!"int", !8, i64 0}
+  !8 = !{!"omnipotent char", !9, i64 0}
+  !9 = !{!"Simple C++ TBAA"}
+  !10 = !{i32 2, i32 0}
+  !11 = !{!12, !12, i64 0}
+  !12 = !{!"float", !8, i64 0}
+  !13 = !{!7, !7, i64 0}
+  !14 = !{}
+  !15 = !{!16, !16, i64 0}
+  !16 = !{!"short", !8, i64 0}
+  !17 = !{i64 2156921074}
+  !18 = !{i64 1374}
+  !19 = distinct !{!19, !20}
+  !20 = !{!"llvm.loop.mustprogress"}
+  !21 = !{i64 4728}
+  !22 = !{i64 4959}
+  !23 = !{i64 5095}
+  !24 = !{i64 5195}
+  !25 = !{i64 5376}
+  !26 = !{i64 5740}
+  !27 = distinct !{!27, !20}
+...
+---
+name:            mma_tc_manual
+alignment:       1
+exposesReturnsTwice: false
+legalized:       false
+regBankSelected: false
+selected:        false
+failedISel:      false
+tracksRegLiveness: true
+hasWinCFI:       false
+noPhis:          true
+isSSA:           false
+noVRegs:         false
+hasFakeUses:     false
+callsEHReturn:   false
+callsUnwindInit: false
+hasEHContTarget: false
+hasEHScopes:     false
+hasEHFunclets:   false
+isOutlined:      false
+debugInstrRef:   false
+failsVerification: false
+tracksDebugUserValues: false
+registers:
+  - { id: 0, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 1, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 2, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 3, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 4, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 5, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 6, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 7, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 8, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 9, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 10, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 11, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 12, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 13, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 14, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 15, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 16, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 17, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 18, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 19, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 20, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 21, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 22, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 23, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 24, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 25, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 26, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 27, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 28, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 29, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 30, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 31, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 32, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 33, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 34, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 35, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 36, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 37, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 38, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 39, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 40, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 41, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 42, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 43, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 44, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 45, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 46, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 47, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 48, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 49, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 50, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 51, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 52, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 53, class: b1, preferred-register: '', flags: [  ] }
+  - { id: 54, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 55, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 56, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 57, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 58, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 59, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 60, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 61, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 62, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 63, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 64, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 65, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 66, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 67, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 68, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 69, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 70, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 71, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 72, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 73, class: b16, preferred-register: '', flags: [  ] }
+  - { id: 74, class: b16, preferred-register: '', flags: [  ] }
+  - { id: 75, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 76, class: b16, preferred-register: '', flags: [  ] }
+  - { id: 77, class: b16, preferred-register: '', flags: [  ] }
+  - { id: 78, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 79, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 80, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 81, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 82, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 83, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 84, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 85, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 86, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 87, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 88, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 89, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 90, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 91, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 92, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 93, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 94, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 95, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 96, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 97, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 98, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 99, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 100, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 101, class: b1, preferred-register: '', flags: [  ] }
+  - { id: 102, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 103, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 104, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 105, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 106, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 107, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 108, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 109, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 110, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 111, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 112, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 113, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 114, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 115, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 116, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 117, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 118, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 119, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 120, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 121, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 122, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 123, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 124, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 125, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 126, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 127, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 128, class: b32, preferred-register: '', flags: [  ] }
+liveins:         []
+frameInfo:
+  isFrameAddressTaken: false
+  isReturnAddressTaken: false
+  hasStackMap:     false
+  hasPatchPoint:   false
+  stackSize:       0
+  offsetAdjustment: 0
+  maxAlignment:    1
+  adjustsStack:    false
+  hasCalls:        false
+  framePointerPolicy: all
+  stackProtector:  ''
+  functionContext: ''
+  maxCallFrameSize: 4294967295
+  cvBytesOfCalleeSavedRegisters: 0
+  hasOpaqueSPAdjustment: false
+  hasVAStart:      false
+  hasMustTailInVarArgFunc: false
+  hasTailCall:     false
+  isCalleeSavedInfoValid: false
+  localFrameSize:  0
+fixedStack:      []
+stack:           []
+entry_values:    []
+callSites:       []
+debugValueSubstitutions: []
+constants:       []
+machineFunctionInfo: {}
+body:             |
+  bb.0 (%ir-block.6):
+    successors: %bb.2(0x50000000), %bb.1(0x30000000)
+  
+    %45:b32 = LD_i32 0, 0, 101, 3, 32, -1, <mcsymbol mma_tc_manual_param_5>, 0, 0, $noreg :: (dereferenceable invariant load (s32), addrspace 101)
+    %44:b32 = LD_i32 0, 0, 101, 3, 32, -1, <mcsymbol mma_tc_manual_param_4>, 0, 0, $noreg :: (dereferenceable invariant load (s32), addrspace 101)
+    %48:b64 = LD_i64 0, 0, 101, 3, 64, -1, <mcsymbol mma_tc_manual_param_2>, 0, 0, $noreg :: (dereferenceable invariant load (s64), addrspace 101)
+    %2:b64 = cvta_to_global_64 %48
+    %3:b32 = INT_PTX_SREG_TID_x
+    %49:b32 = INT_PTX_SREG_CTAID_y
+    %50:b32 = SHL32_ri %49, 4
+    %51:b32 = INT_PTX_SREG_CTAID_x
+    %4:b32 = SHL32_ri %51, 3
+    %5:b32 = SRL32_ri %3, 2
+    %52:b32 = nuw nsw SHL32_ri %3, 1
+    %6:b32 = AND_b32ri %52, 6
+    %53:b1 = SETP_i32ri %45, 0, 4
+    %7:b32 = ADD32rr %50, %5
+    CBranch %53, %bb.2, 0
+    GOTO %bb.1
+  
+  bb.1 (%ir-block.20):
+    successors: %bb.3(0x80000000)
+  
+    %116:b64 = CVT_s64_s32 %4, 0
+    %115:b64 = CVT_u64_u32 %6, 0
+    %114:b32 = ADD32ri %7, 8
+    %128:b32 = MOV_F32_i float 0.000000e+00
+    %127:b32 = COPY %128
+    %126:b32 = COPY %128
+    %125:b32 = COPY %128
+    GOTO %bb.3
+  
+  bb.2 (%ir-block.24):
+    successors: %bb.4(0x80000000)
+  
+    %46:b64 = LD_i64 0, 0, 101, 3, 64, -1, <mcsymbol mma_tc_manual_param_0>, 0, 0, $noreg :: (dereferenceable invariant load (s64), addrspace 101)
+    %0:b64 = cvta_to_global_64 %46
+    %47:b64 = LD_i64 0, 0, 101, 3, 64, -1, <mcsymbol mma_tc_manual_param_1>, 0, 0, $noreg :: (dereferenceable invariant load (s64), addrspace 101)
+    %1:b64 = cvta_to_global_64 %47
+    %57:b32 = nuw nsw MULT32rr %45, %7
+    %114:b32 = ADD32ri %7, 8
+    %58:b32 = nuw nsw MULT32rr %45, %114
+    %115:b64 = CVT_u64_u32 %6, 0
+    %116:b64 = CVT_s64_s32 %4, 0
+    %59:b64 = MUL_WIDEs32_ri %4, 2
+    %60:b64 = ADD64rr %1, %59
+    %61:b64 = MUL_WIDEu32_ri %5, 2
+    %14:b64 = ADD64rr %60, %61
+    %15:b64 = CVT_s64_s32 %44, 0
+    %62:b32 = disjoint OR_b32ri %6, 8
+    %16:b32 = MULT32rr %44, %62
+    %17:b32 = SHL32_ri %44, 4
+    %63:b32 = AND_b32ri %3, 3
+    %64:b32 = MULT32rr %44, %63
+    %18:b32 = SHL32_ri %64, 1
+    %65:b64 = MUL_WIDEu32_ri %63, 4
+    %66:b64 = MUL_WIDEu32_ri %58, 2
+    %67:b64 = ADD64rr %65, %66
+    %68:b64 = ADD64rr %67, %0
+    %122:b64 = ADD64ri %68, 16
+    %69:b64 = MUL_WIDEu32_ri %57, 2
+    %70:b64 = ADD64rr %65, %69
+    %71:b64 = ADD64rr %70, %0
+    %121:b64 = ADD64ri %71, 16
+    %125:b32 = MOV_F32_i float 0.000000e+00
+    %123:b32 = MOV_B32_i 0
+    %98:b64 = nsw SHL64_ri %15, 1
+    %124:b32 = COPY %123
+    %126:b32 = COPY %125
+    %127:b32 = COPY %125
+    %128:b32 = COPY %125
+    GOTO %bb.4
+  
+  bb.3 (%ir-block.51):
+    %102:b32 = nsw MULT32rr %44, %7
+    %103:b64 = MUL_WIDEs32_ri %102, 4
+    %104:b64 = ADD64rr %2, %103
+    %105:b64 = nsw SHL64_ri %116, 2
+    %106:b64 = ADD64rr %104, %105
+    %107:b64 = nsw SHL64_ri %115, 2
+    %108:b64 = ADD64rr %106, %107
+    %109:b32 = nsw MULT32rr %44, %114
+    %110:b64 = MUL_WIDEs32_ri %109, 4
+    %111:b64 = ADD64rr %2, %110
+    %112:b64 = ADD64rr %111, %105
+    %113:b64 = ADD64rr %112, %107
+    ST_i32 %125, 0, 0, 1, 32, %108, 0, 0, $noreg :: (store (s32) into %ir.63, !tbaa !11, addrspace 1)
+    ST_i32 %126, 0, 0, 1, 32, %108, 4, 0, $noreg :: (store (s32) into %ir.69, !tbaa !11, addrspace 1)
+    ST_i32 %127, 0, 0, 1, 32, %113, 0, 0, $noreg :: (store (s32) into %ir.68, !tbaa !11, addrspace 1)
+    ST_i32 %128, 0, 0, 1, 32, %113, 4, 0, $noreg :: (store (s32) into %ir.70, !tbaa !11, addrspace 1)
+    Return
+  
+  bb.4 (%ir-block.71):
+    successors: %bb.4(0x7c000000), %bb.3(0x04000000)
+  
+    %82:b32 = LD_GLOBAL_NC_i32 3, 32, -1, %121, -16, 0, $noreg
+    %83:b32 = LD_GLOBAL_NC_i32 3, 32, -1, %122, -16, 0, $noreg
+    %84:b32 = LD_GLOBAL_NC_i32 3, 32, -1, %121, 0, 0, $noreg
+    %85:b32 = LD_GLOBAL_NC_i32 3, 32, -1, %122, 0, 0, $noreg
+    %92:b32 = ADD32rr %18, %123
+    %93:b64 = MUL_WIDEs32_ri %92, 2
+    %94:b64 = ADD64rr %14, %93
+    %95:b32 = ADD32rr %16, %123
+    %96:b64 = MUL_WIDEs32_ri %95, 2
+    %97:b64 = ADD64rr %14, %96
+    %73:b16 = LD_GLOBAL_NC_i16 3, 16, -1, %94, 0, 0, $noreg
+    %99:b64 = ADD64rr %94, %98
+    %74:b16 = LD_GLOBAL_NC_i16 3, 16, -1, %99, 0, 0, $noreg
+    INLINEASM &"{  mov.b32 $0, {$1,$2};}\0A", isconvergent attdialect, regdef:B32, def %72, reguse:B16, %73, reguse:B16, %74, !17
+    %76:b16 = LD_GLOBAL_NC_i16 3, 16, -1, %97, 0, 0, $noreg
+    %100:b64 = ADD64rr %97, %98
+    %77:b16 = LD_GLOBAL_NC_i16 3, 16, -1, %100, 0, 0, $noreg
+    INLINEASM &"{  mov.b32 $0, {$1,$2};}\0A", isconvergent attdialect, regdef:B32, def %75, reguse:B16, %76, reguse:B16, %77, !17
+    INLINEASM &"mma.sync.aligned.m16n8k16.row.col.f32.f16.f16.f32 {$0,$1,$2,$3}, {$4,$5,$6,$7}, {$8,$9}, {$10,$11,$12,$13};\0A", sideeffect isconvergent attdialect, regdef:B32, def %125, regdef:B32, def %126, regdef:B32, def %127, regdef:B32, def %128, reguse:B32, %82, reguse:B32, %83, reguse:B32, %84, reguse:B32, %85, reguse:B32, %72, reguse:B32, %75, reguse:B32, %125, reguse:B32, %126, reguse:B32, %127, reguse:B32, %128, !18
+    %124:b32 = nuw ADD32ri %124, 16
+    %123:b32 = ADD32rr %123, %17
+    %122:b64 = ADD64ri %122, 32
+    %121:b64 = ADD64ri %121, 32
+    %101:b1 = SETP_i32rr %124, %45, 2
+    CBranch %101, %bb.4, 0
+    GOTO %bb.3
+...
+---
+name:            mma_tc_ldmatrix
+alignment:       1
+exposesReturnsTwice: false
+legalized:       false
+regBankSelected: false
+selected:        false
+failedISel:      false
+tracksRegLiveness: true
+hasWinCFI:       false
+noPhis:          true
+isSSA:           false
+noVRegs:         false
+hasFakeUses:     false
+callsEHReturn:   false
+callsUnwindInit: false
+hasEHContTarget: false
+hasEHScopes:     false
+hasEHFunclets:   false
+isOutlined:      false
+debugInstrRef:   false
+failsVerification: false
+tracksDebugUserValues: false
+registers:
+  - { id: 0, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 1, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 2, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 3, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 4, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 5, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 6, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 7, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 8, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 9, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 10, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 11, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 12, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 13, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 14, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 15, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 16, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 17, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 18, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 19, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 20, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 21, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 22, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 23, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 24, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 25, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 26, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 27, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 28, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 29, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 30, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 31, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 32, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 33, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 34, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 35, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 36, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 37, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 38, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 39, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 40, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 41, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 42, class: b1, preferred-register: '', flags: [  ] }
+  - { id: 43, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 44, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 45, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 46, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 47, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 48, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 49, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 50, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 51, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 52, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 53, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 54, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 55, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 56, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 57, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 58, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 59, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 60, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 61, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 62, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 63, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 64, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 65, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 66, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 67, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 68, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 69, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 70, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 71, class: b1, preferred-register: '', flags: [  ] }
+  - { id: 72, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 73, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 74, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 75, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 76, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 77, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 78, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 79, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 80, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 81, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 82, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 83, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 84, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 85, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 86, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 87, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 88, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 89, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 90, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 91, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 92, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 93, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 94, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 95, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 96, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 97, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 98, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 99, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 100, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 101, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 102, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 103, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 104, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 105, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 106, class: b1, preferred-register: '', flags: [  ] }
+  - { id: 107, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 108, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 109, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 110, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 111, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 112, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 113, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 114, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 115, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 116, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 117, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 118, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 119, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 120, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 121, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 122, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 123, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 124, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 125, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 126, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 127, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 128, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 129, class: b64, preferred-register: '', flags: [  ] }
+  - { id: 130, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 131, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 132, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 133, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 134, class: b32, preferred-register: '', flags: [  ] }
+  - { id: 135, class: b32, preferred-register: '', flags: [  ] }
+liveins:         []
+frameInfo:
+  isFrameAddressTaken: false
+  isReturnAddressTaken: false
+  hasStackMap:     false
+  hasPatchPoint:   false
+  stackSize:       0
+  offsetAdjustment: 0
+  maxAlignment:    1
+  adjustsStack:    false
+  hasCalls:        false
+  framePointerPolicy: all
+  stackProtector:  ''
+  functionContext: ''
+  maxCallFrameSize: 4294967295
+  cvBytesOfCalleeSavedRegisters: 0
+  hasOpaqueSPAdjustment: false
+  hasVAStart:      false
+  hasMustTailInVarArgFunc: false
+  hasTailCall:     false
+  isCalleeSavedInfoValid: false
+  localFrameSize:  0
+fixedStack:      []
+stack:           []
+entry_values:    []
+callSites:       []
+debugValueSubstitutions: []
+constants:       []
+machineFunctionInfo: {}
+body:             |
+  bb.0 (%ir-block.6):
+    successors: %bb.2(0x50000000), %bb.1(0x30000000)
+  
+    %36:b32 = LD_i32 0, 0, 101, 3, 32, -1, <mcsymbol mma_tc_ldmatrix_param_5>, 0, 0, $noreg :: (dereferenceable invariant load (s32), addrspace 101)
+    %35:b32 = LD_i32 0, 0, 101, 3, 32, -1, <mcsymbol mma_tc_ldmatrix_param_4>, 0, 0, $noreg :: (dereferenceable invariant load (s32), addrspace 101)
+    %39:b64 = LD_i64 0, 0, 101, 3, 64, -1, <mcsymbol mma_tc_ldmatrix_param_2>, 0, 0, $noreg :: (dereferenceable invariant load (s64), addrspace 101)
+    %2:b64 = cvta_to_global_64 %39
+    %3:b32 = INT_PTX_SREG_TID_x
+    %40:b32 = INT_PTX_SREG_CTAID_y
+    %4:b32 = nuw nsw SHL32_ri %40, 4
+    %41:b32 = INT_PTX_SREG_CTAID_x
+    %5:b32 = SHL32_ri %41, 3
+    %42:b1 = SETP_i32ri %36, 0, 4
+    CBranch %42, %bb.2, 0
+    GOTO %bb.1
+  
+  bb.1 (%ir-block.16):
+    successors: %bb.3(0x80000000)
+  
+    %124:b64 = CVT_s64_s32 %5, 0
+    %135:b32 = MOV_F32_i float 0.000000e+00
+    %134:b32 = COPY %135
+    %133:b32 = COPY %135
+    %132:b32 = COPY %135
+    GOTO %bb.3
+  
+  bb.2 (%ir-block.18):
+    successors: %bb.4(0x80000000)
+  
+    %37:b64 = LD_i64 0, 0, 101, 3, 64, -1, <mcsymbol mma_tc_ldmatrix_param_0>, 0, 0, $noreg :: (dereferenceable invariant load (s64), addrspace 101)
+    %0:b64 = cvta_to_global_64 %37
+    %38:b64 = LD_i64 0, 0, 101, 3, 64, -1, <mcsymbol mma_tc_ldmatrix_param_1>, 0, 0, $noreg :: (dereferenceable invariant load (s64), addrspace 101)
+    %1:b64 = cvta_to_global_64 %38
+    %46:b32 = nuw nsw SHL32_ri %3, 3
+    %47:b32 = SRL32_ri %3, 1
+    %48:b32 = AND_b32ri %46, 8
+    %49:b32 = SHL32_ri %47, 5
+    %50:b64 = CVT_u64_u32 %49, 0
+    %51:b64 = MOV_B64_sym @_ZZ15mma_tc_ldmatrixE2As
+    %52:b64 = ADD64rr %51, %50
+    %53:b64 = MUL_WIDEu32_ri %48, 2
+    %54:b64 = ADD64rr %52, %53
+    %55:b32 = nuw nsw ADD32rr %4, %47
+    %56:b32 = nuw nsw MULT32rr %36, %55
+    %57:b64 = MUL_WIDEu32_ri %56, 2
+    %58:b64 = ADD64rr %0, %57
+    %59:b64 = ADD64rr %58, %53
+    %129:b64 = cvta_global_64 %59
+    %79:b32 = CVT_u32_u64 %54, 0
+    %60:b32 = nuw nsw SHL32_ri %3, 2
+    %61:b32 = AND_b32ri %60, 4
+    %62:b64 = MUL_WIDEu32_ri %47, 16
+    %63:b64 = MOV_B64_sym @_ZZ15mma_tc_ldmatrixE2Bs
+    %64:b64 = ADD64rr %63, %62
+    %65:b64 = MUL_WIDEu32_ri %61, 2
+    %66:b64 = ADD64rr %64, %65
+    %124:b64 = CVT_s64_s32 %5, 0
+    %67:b64 = MUL_WIDEs32_ri %5, 2
+    %68:b64 = ADD64rr %1, %67
+    %69:b64 = ADD64rr %68, %65
+    %10:b64 = cvta_global_64 %69
+    %81:b32 = CVT_u32_u64 %66, 0
+    %70:b32 = AND_b32ri %3, 15
+    %71:b1 = samesign SETP_i32ri %3, 15, 10
+    %72:b64 = nsw SELP_b64ii 16, 0, %71
+    %73:b32 = SHL32_ri %70, 5
+    %74:b64 = CVT_u64_u32 %73, 0
+    %75:b64 = ADD64rr %51, %74
+    %76:b64 = ADD64rr %75, %72
+    %87:b32 = CVT_u32_u64 %76, 0
+    %77:b64 = MUL_WIDEu32_ri %70, 16
+    %78:b64 = ADD64rr %63, %77
+    %90:b32 = CVT_u32_u64 %78, 0
+    %130:b32 = MULT32rr %35, %47
+    %15:b32 = SHL32_ri %35, 4
+    %132:b32 = MOV_F32_i float 0.000000e+00
+    %131:b32 = MOV_B32_i 0
+    %133:b32 = COPY %132
+    %134:b32 = COPY %132
+    %135:b32 = COPY %132
+    GOTO %bb.4
+  
+  bb.3 (%ir-block.58):
+    %107:b32 = nuw nsw SHL32_ri %3, 1
+    %108:b32 = AND_b32ri %107, 6
+    %109:b32 = SRL32_ri %3, 2
+    %110:b32 = nuw nsw ADD32rr %4, %109
+    %111:b32 = nsw MULT32rr %35, %110
+    %112:b64 = MUL_WIDEs32_ri %111, 4
+    %113:b64 = ADD64rr %2, %112
+    %114:b64 = nsw SHL64_ri %124, 2
+    %115:b64 = ADD64rr %113, %114
+    %116:b64 = MUL_WIDEu32_ri %108, 4
+    %117:b64 = ADD64rr %115, %116
+    %118:b32 = ADD32ri %110, 8
+    %119:b32 = nsw MULT32rr %35, %118
+    %120:b64 = MUL_WIDEs32_ri %119, 4
+    %121:b64 = ADD64rr %2, %120
+    %122:b64 = ADD64rr %121, %114
+    %123:b64 = ADD64rr %122, %116
+    ST_i32 %132, 0, 0, 1, 32, %117, 0, 0, $noreg :: (store (s32) into %ir.73, !tbaa !11, addrspace 1)
+    ST_i32 %133, 0, 0, 1, 32, %117, 4, 0, $noreg :: (store (s32) into %ir.80, !tbaa !11, addrspace 1)
+    ST_i32 %134, 0, 0, 1, 32, %123, 0, 0, $noreg :: (store (s32) into %ir.79, !tbaa !11, addrspace 1)
+    ST_i32 %135, 0, 0, 1, 32, %123, 4, 0, $noreg :: (store (s32) into %ir.81, !tbaa !11, addrspace 1)
+    Return
+  
+  bb.4 (%ir-block.82):
+    successors: %bb.4(0x7c000000), %bb.3(0x04000000)
+  
+    INLINEASM &"cp.async.cg.shared.global [$0], [$1], 16;\0A", sideeffect isconvergent attdialect, reguse:B32, %79, reguse:B64, %129, !21
+    %105:b64 = MUL_WIDEs32_ri %130, 2
+    %82:b64 = ADD64rr %10, %105
+    INLINEASM &"cp.async.ca.shared.global [$0], [$1], 8;\0A", sideeffect isconvergent attdialect, reguse:B32, %81, reguse:B64, %82, !22
+    INLINEASM &"cp.async.commit_group;\0A", sideeffect isconvergent attdialect, !23
+    INLINEASM &"cp.async.wait_group 0;\0A", sideeffect isconvergent attdialect, !24
+    BARRIER_CTA_SYNC_ALIGNED_ALL_i 0
+    INLINEASM &"ldmatrix.sync.aligned.m8n8.x4.shared.b16 {$0,$1,$2,$3}, [$4];\0A", sideeffect isconvergent attdialect, regdef:B32, def %83, regdef:B32, def %84, regdef:B32, def %85, regdef:B32, def %86, reguse:B32, %87, !25
+    INLINEASM &"ldmatrix.sync.aligned.m8n8.x2.trans.shared.b16 {$0,$1}, [$2];\0A", sideeffect isconvergent attdialect, regdef:B32, def %88, regdef:B32, def %89, reguse:B32, %90, !26
+    INLINEASM &"mma.sync.aligned.m16n8k16.row.col.f32.f16.f16.f32 {$0,$1,$2,$3}, {$4,$5,$6,$7}, {$8,$9}, {$10,$11,$12,$13};\0A", sideeffect isconvergent attdialect, regdef:B32, def %132, regdef:B32, def %133, regdef:B32, def %134, regdef:B32, def %135, reguse:B32, %83, reguse:B32, %84, reguse:B32, %85, reguse:B32, %86, reguse:B32, %88, reguse:B32, %89, reguse:B32, %132, reguse:B32, %133, reguse:B32, %134, reguse:B32, %135, !18
+    BARRIER_CTA_SYNC_ALIGNED_ALL_i 0
+    %131:b32 = nuw ADD32ri %131, 16
+    %130:b32 = ADD32rr %130, %15
+    %129:b64 = ADD64ri %129, 32
+    %106:b1 = SETP_i32rr %131, %36, 2
+    CBranch %106, %bb.4, 0
+    GOTO %bb.3
+...

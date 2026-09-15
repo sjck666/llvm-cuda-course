@@ -1,0 +1,35 @@
+clang version 24.0.0git (ssh://git@ssh.github.com:443/llvm/llvm-project.git 677a4c33ba942fe7aec6a1be15ba388f1b74d855)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+InstalledDir: /usr/local/bin
+Found candidate GCC installation: /usr/lib/gcc/x86_64-linux-gnu/13
+Selected GCC installation: /usr/lib/gcc/x86_64-linux-gnu/13
+Candidate multilib: .;@m64
+Selected multilib: .;@m64
+Found CUDA installation: /usr/local/cuda-12.8, version 12.8
+ (in-process)
+ "/usr/local/bin/clang-24" -cc1 -triple nvptx64-nvidia-cuda -aux-triple x86_64-unknown-linux-gnu -O2 -S -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name tc_mma.cu -mrelocation-model static -mframe-pointer=all -fno-rounding-math -no-integrated-as -aux-target-cpu x86-64 -fcuda-is-device -fno-threadsafe-statics -mlink-builtin-bitcode /usr/local/cuda-12.8/nvvm/libdevice/libdevice.10.bc -target-sdk-version=12.8 -target-cpu sm_89 -target-feature +ptx87 -debugger-tuning=gdb -fno-dwarf-directory-asm -fdebug-compilation-dir=/root/llvm-cuda-course/code -v -resource-dir /usr/local/lib/clang/24 -internal-isystem /usr/local/lib/clang/24/include/cuda_wrappers -include __clang_cuda_runtime_wrapper.h -D__CUDA_ARCH_LIST__=890 -internal-isystem /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13 -internal-isystem /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/x86_64-linux-gnu/c++/13 -internal-isystem /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/backward -internal-isystem /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13 -internal-isystem /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/x86_64-linux-gnu/c++/13 -internal-isystem /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/backward -internal-isystem /usr/local/lib/clang/24/include -internal-isystem /usr/local/include -internal-isystem /usr/lib/gcc/x86_64-linux-gnu/13/../../../../x86_64-linux-gnu/include -internal-externc-isystem /usr/include/x86_64-linux-gnu -internal-externc-isystem /include -internal-externc-isystem /usr/include -internal-isystem /usr/local/cuda-12.8/include -internal-isystem /usr/local/lib/clang/24/include -internal-isystem /usr/local/include -internal-isystem /usr/lib/gcc/x86_64-linux-gnu/13/../../../../x86_64-linux-gnu/include -internal-externc-isystem /usr/include/x86_64-linux-gnu -internal-externc-isystem /include -internal-externc-isystem /usr/include -fdeprecated-macro -fno-autolink -ferror-limit 19 -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -fno-color-diagnostics -vectorize-loops -vectorize-slp -cuid=137d7f34e96f0949 -fdwarf2-cfi-asm -o /dev/null -x cuda tc_mma.cu
+clang -cc1 version 24.0.0git based upon LLVM 24.0.0git default target x86_64-unknown-linux-gnu
+ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/13/../../../../x86_64-linux-gnu/include"
+ignoring nonexistent directory "/include"
+ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/13/../../../../x86_64-linux-gnu/include"
+ignoring nonexistent directory "/include"
+ignoring duplicate directory "/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13"
+ignoring duplicate directory "/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/x86_64-linux-gnu/c++/13"
+ignoring duplicate directory "/usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/backward"
+ignoring duplicate directory "/usr/local/lib/clang/24/include"
+ignoring duplicate directory "/usr/local/include"
+ignoring duplicate directory "/usr/include/x86_64-linux-gnu"
+ignoring duplicate directory "/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/local/lib/clang/24/include/cuda_wrappers
+ /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13
+ /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/x86_64-linux-gnu/c++/13
+ /usr/lib/gcc/x86_64-linux-gnu/13/../../../../include/c++/13/backward
+ /usr/local/lib/clang/24/include
+ /usr/local/include
+ /usr/include/x86_64-linux-gnu
+ /usr/include
+ /usr/local/cuda-12.8/include
+End of search list.

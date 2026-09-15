@@ -1,0 +1,11 @@
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function 'mma_tc_ldmatrix' for 'sm_89'
+ptxas info    : Function properties for mma_tc_ldmatrix
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 40 registers, used 1 barriers, 768 bytes smem, 388 bytes cmem[0], 8 bytes cmem[2]
+ptxas info    : Compile time = 4.824 ms
+ptxas info    : Compiling entry function 'mma_tc_manual' for 'sm_89'
+ptxas info    : Function properties for mma_tc_manual
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 40 registers, used 0 barriers, 388 bytes cmem[0]
+ptxas info    : Compile time = 5.521 ms

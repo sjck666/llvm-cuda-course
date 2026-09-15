@@ -1,0 +1,165 @@
+ObjC ARC contraction
+Pre-ISel Intrinsic Lowering
+Expand IR instructions
+Replace occurrences of __nvvm_reflect() calls with 0/1
+Assign valid PTX names to globals
+Ensure that the global variables are in the global address space
+Expand variadic functions
+NVPTX Mark Kernel Pointers Global
+Promote alignment of parameters and return values
+Lower pointer arguments of CUDA kernels
+SROA
+convert address space of alloca'ed memory to local
+Infer address spaces
+NVPTX lower atomics of local memory
+Split GEPs to a variadic base and a constant offset for better CSE
+Speculatively execute instructions
+Straight line strength reduction
+Early CSE
+Nary reassociation
+Early CSE
+Expand Atomic instructions
+SROA
+convert address space of alloca'ed memory to local
+Infer address spaces
+NVPTX lower atomics of local memory
+Split GEPs to a variadic base and a constant offset for better CSE
+Speculatively execute instructions
+Straight line strength reduction
+Early CSE
+Nary reassociation
+Early CSE
+Expand Atomic instructions
+Lower ctors and dtors for NVPTX
+Module Verifier
+Canonicalize natural loops
+Canonicalize Freeze Instructions in Loops
+Loop Strength Reduction
+Lower Garbage Collection Instructions
+Shadow Stack GC Lowering
+Remove unreachable blocks from the CFG
+Constant Hoisting
+Replace intrinsics with calls to vector library
+Partially inline calls to library functions
+Instrument function entry/exit with calls to e.g. mcount()
+Scalarize Masked Memory Intrinsics
+Expand reduction intrinsics
+Early CSE
+GPU Load and Store Vectorizer
+SROA
+NVPTX Tag Invariant Loads
+NVPTX IR Peephole
+add an exit instruction before every unreachable
+CodeGen Prepare
+Lower invoke and unwind, for unwindless code generators
+Remove unreachable blocks from the CFG
+Prepare inline asm insts
+Safe Stack instrumentation pass
+Module Verifier
+Lower aggregate copies/intrinsics into loops
+NVPTX specific alloca hoisting
+NVPTX DAG->DAG Pattern Instruction Selection
+Finalize ISel and expand pseudo-instructions
+Early Tail Duplication
+Optimize machine instruction PHIs
+Slot index numbering
+Merge disjoint stack slots
+Local Stack Slot Allocation
+Remove dead machine instructions
+Early Machine Loop Invariant Code Motion
+Machine Common Subexpression Elimination
+Machine code sinking
+Peephole Optimizations
+Remove dead machine instructions
+NVPTX Forward Params
+NVPTX Address Folder
+NVPTX Proxy Register Instruction Erasure
+Process Implicit Definitions
+Remove unreachable machine basic blocks
+Live Variable Analysis
+Eliminate PHI nodes for register allocation
+Two-Address instruction pass
+Slot index numbering
+Register Coalescer
+Machine Instruction Scheduler
+Stack Slot Coloring
+NVPTX Prolog Epilog Pass
+NVPTX optimize redundant cvta.to.local instruction
+Remove Redundant DEBUG_VALUE analysis
+Fixup Statepoint Caller Saved
+Control Flow Optimizer
+Post-RA pseudo instruction expansion pass
+Analyze Machine Code For Garbage Collection
+Branch Probability Basic Block Placement
+Insert fentry calls
+Insert XRay ops
+Live DEBUG_VALUE analysis
+Machine Sanitizer Binary Metadata
+Stack Frame Layout Analysis
+NVPTX Assembly Printer
+Module Verifier
+Canonicalize natural loops
+Canonicalize Freeze Instructions in Loops
+Loop Strength Reduction
+Lower Garbage Collection Instructions
+Shadow Stack GC Lowering
+Remove unreachable blocks from the CFG
+Constant Hoisting
+Replace intrinsics with calls to vector library
+Partially inline calls to library functions
+Instrument function entry/exit with calls to e.g. mcount()
+Scalarize Masked Memory Intrinsics
+Expand reduction intrinsics
+Early CSE
+GPU Load and Store Vectorizer
+SROA
+NVPTX Tag Invariant Loads
+NVPTX IR Peephole
+add an exit instruction before every unreachable
+CodeGen Prepare
+Lower invoke and unwind, for unwindless code generators
+Remove unreachable blocks from the CFG
+Prepare inline asm insts
+Safe Stack instrumentation pass
+Module Verifier
+Lower aggregate copies/intrinsics into loops
+NVPTX specific alloca hoisting
+NVPTX DAG->DAG Pattern Instruction Selection
+Finalize ISel and expand pseudo-instructions
+Early Tail Duplication
+Optimize machine instruction PHIs
+Slot index numbering
+Merge disjoint stack slots
+Local Stack Slot Allocation
+Remove dead machine instructions
+Early Machine Loop Invariant Code Motion
+Machine Common Subexpression Elimination
+Machine code sinking
+Peephole Optimizations
+Remove dead machine instructions
+NVPTX Forward Params
+NVPTX Address Folder
+NVPTX Proxy Register Instruction Erasure
+Process Implicit Definitions
+Remove unreachable machine basic blocks
+Live Variable Analysis
+Eliminate PHI nodes for register allocation
+Two-Address instruction pass
+Slot index numbering
+Register Coalescer
+Machine Instruction Scheduler
+Stack Slot Coloring
+NVPTX Prolog Epilog Pass
+NVPTX optimize redundant cvta.to.local instruction
+Remove Redundant DEBUG_VALUE analysis
+Fixup Statepoint Caller Saved
+Control Flow Optimizer
+Post-RA pseudo instruction expansion pass
+Analyze Machine Code For Garbage Collection
+Branch Probability Basic Block Placement
+Insert fentry calls
+Insert XRay ops
+Live DEBUG_VALUE analysis
+Machine Sanitizer Binary Metadata
+Stack Frame Layout Analysis
+NVPTX Assembly Printer
